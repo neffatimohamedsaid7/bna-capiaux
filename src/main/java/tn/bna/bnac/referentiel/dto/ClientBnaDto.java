@@ -20,6 +20,7 @@ public class ClientBnaDto {
     private String cinRne;
     private String typePiece;
     private String numeroPiece;
+    private String nomPrenom;
     private String relation;
     private String activite;
     private String adresse;

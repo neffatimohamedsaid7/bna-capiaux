@@ -26,6 +26,7 @@ public class ClientBnaServiceStub implements ClientBnaService {
                     .cinRne("12345678")
                     .typePiece("CIN")
                     .numeroPiece("12345678")
+                    .nomPrenom("Ahmed Ben Salah")
                     .relation("Client particulier")
                     .activite("Salarie")
                     .adresse("Avenue Habib Bourguiba, Tunis")
@@ -45,6 +46,7 @@ public class ClientBnaServiceStub implements ClientBnaService {
                     .cinRne("87654321")
                     .typePiece("CIN")
                     .numeroPiece("87654321")
+                    .nomPrenom("Fatma Trabelsi")
                     .relation("Client particulier")
                     .activite("Profession liberale")
                     .adresse("Rue de Marseille, Sfax")
@@ -53,6 +55,22 @@ public class ClientBnaServiceStub implements ClientBnaService {
                                     .numeroCompte("01090099887")
                                     .typeCompte(TypeCompteBna.TYPE_109)
                                     .provisionDisponible(new BigDecimal("500.000"))
+                                    .build()))
+                    .build(),
+            // Client BNA sans compte titre BNAC (utile pour tester le Module 3 - RG3.3).
+            "11112222", ClientBnaDto.builder()
+                    .cinRne("11112222")
+                    .typePiece("CIN")
+                    .numeroPiece("11112222")
+                    .nomPrenom("Sami Gharbi")
+                    .relation("Client particulier")
+                    .activite("Commercant")
+                    .adresse("Rue Ibn Khaldoun, Sousse")
+                    .comptes(List.of(
+                            CompteBnaDto.builder()
+                                    .numeroCompte("01150011223")
+                                    .typeCompte(TypeCompteBna.TYPE_115)
+                                    .provisionDisponible(new BigDecimal("8000.000"))
                                     .build()))
                     .build());
 

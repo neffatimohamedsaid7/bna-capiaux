@@ -27,9 +27,21 @@ import java.util.UUID;
 @Slf4j
 public class BnacClientStub implements BnacClient {
 
+    /** CIN de demonstration simulant un client BNA sans compte titre BNAC (cf. RG3.3, redirection Module 3). */
+    private static final String CIN_SANS_COMPTE_TITRE = "11112222";
+
     @Override
     public ClientBnacDetailResponse detailClient(String critereRecherche) {
         log.warn("[BNAC STUB] detailClient('{}') - reponse simulee, aucun appel reseau reel", critereRecherche);
+
+        if (CIN_SANS_COMPTE_TITRE.equals(critereRecherche)) {
+            return ClientBnacDetailResponse.builder()
+                    .possedeCompteTitre(false)
+                    .identifiant(critereRecherche)
+                    .typeIdentifiant("CIN")
+                    .produits(List.of())
+                    .build();
+        }
 
         List<ProduitBnacDto> produits = List.of(
                 ProduitBnacDto.builder()
