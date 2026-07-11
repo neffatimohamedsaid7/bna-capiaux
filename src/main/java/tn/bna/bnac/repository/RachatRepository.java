@@ -18,4 +18,7 @@ public interface RachatRepository extends JpaRepository<Rachat, Long> {
             String numeroCompteTitre,
             tn.bna.bnac.domain.ProduitFinancier produit,
             StatutOperation statut);
+
+    /** Module 4 - Consultation : historique complet (tous statuts) pour un client. */
+    List<Rachat> findByCinRneClient(String cinRneClient);
 }

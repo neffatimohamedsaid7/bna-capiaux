@@ -15,4 +15,7 @@ public interface SouscriptionRepository extends JpaRepository<Souscription, Long
     List<Souscription> findByCinRneClientAndStatut(String cinRneClient, StatutOperation statut);
 
     List<Souscription> findByNumeroCompteTitreAndStatut(String numeroCompteTitre, StatutOperation statut);
+
+    /** Module 4 - Consultation : historique complet (tous statuts) pour un client. */
+    List<Souscription> findByCinRneClient(String cinRneClient);
 }
