@@ -82,11 +82,12 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Base H2 en memoire pour les tests (le test de contexte ne doit pas dependre de PostgreSQL) -->
+        <!-- Base H2 en memoire : utilisee par les tests, et par le profil "dev" (application-dev.yml)
+             pour lancer l'appli localement sans dependre d'un PostgreSQL installe. -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
