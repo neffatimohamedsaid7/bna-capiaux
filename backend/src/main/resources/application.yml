@@ -1,0 +1,56 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bnac-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/bnac_db
+    username: bnac_user
+    password: change_me
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# Parametres specifiques a l'interfacage BNAC (WS1 a WS4).
+# A completer avec les URLs/credentials reels fournis par BNA Capitaux.
+bnac:
+  ws:
+    # true (par defaut) : utilise BnacClientStub (donnees simulees), sans appel reseau.
+    # Passer a false une fois les endpoints BNAC reels fournis et testes.
+    stub-mode: true
+    base-url: https://bnac.example.tn/ws
+    timeout-ms: 2000
+    ws1-detail-client: /clients/detail
+    ws2-souscription: /souscriptions
+    ws3-demande-rachat: /rachats
+    ws4-ouverture-compte: /comptes
+
+  # Dossier local de stockage des pieces jointes (ordre de virement, bulletins signes, ...).
+  documents:
+    storage-path: ./documents
+
+# Securite JWT (a completer lors de la mise en place du module d'authentification)
+security:
+  jwt:
+    secret: change_this_secret_in_production
+    expiration-ms: 3600000
