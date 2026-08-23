@@ -1,0 +1,128 @@
+:host {
+  display: block;
+}
+
+.hero {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  background: linear-gradient(160deg, #0a1f1a 0%, #0d2b23 55%, #0f3a30 100%);
+  padding: 3rem 1.5rem 2.25rem;
+  margin-bottom: 2rem;
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.76rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.hero h1 {
+  color: #fff;
+  font-size: 2rem;
+  margin: 0 0 0.6rem;
+}
+
+.hero-sub {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
+  margin: 0;
+  max-width: 640px;
+}
+
+.stats-row {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.9rem;
+}
+
+.stat-tile {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(207, 160, 74, 0.35);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-value {
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.stat-value-muted {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.module-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.module-card-dark {
+  display: block;
+  background: #0d2b23;
+  border: 1px solid #163f34;
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.module-card-dark:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.module-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.module-card-dark h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 1.02rem;
+}
+
+.module-card-dark p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.86rem;
+}
+
+.module-badge {
+  flex-shrink: 0;
+  background: rgba(207, 160, 74, 0.16);
+  color: var(--color-accent);
+  border: 1px solid rgba(207, 160, 74, 0.4);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}

@@ -1,0 +1,30 @@
+<h1>{{ editId ? "Modifier la demande d'ouverture" : "Nouvelle demande d'ouverture" }}</h1>
+<p class="muted">Etape 2 - Saisie du chargé de dossier.</p>
+
+<div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+
+<form class="card" [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loading()">
+  <div class="form-grid">
+    <div class="field">
+      <label for="cinRneClient">CIN / RNE client</label>
+      <input id="cinRneClient" type="text" formControlName="cinRneClient" />
+      <span class="error-text" *ngIf="form.get('cinRneClient')?.touched && form.get('cinRneClient')?.invalid">Champ obligatoire</span>
+    </div>
+
+    <div class="field">
+      <label for="typeCompteSouhaite">Type de compte souhaité</label>
+      <select id="typeCompteSouhaite" formControlName="typeCompteSouhaite">
+        <option value="" disabled>Sélectionner...</option>
+        <option *ngFor="let p of produits" [value]="p.value">{{ p.label }}</option>
+      </select>
+      <span class="error-text" *ngIf="form.get('typeCompteSouhaite')?.touched && form.get('typeCompteSouhaite')?.invalid">Champ obligatoire</span>
+    </div>
+  </div>
+
+  <div class="actions-row">
+    <button type="submit" class="btn-primary" [disabled]="saving()">
+      {{ saving() ? 'Enregistrement...' : 'Enregistrer' }}
+    </button>
+    <a class="btn-secondary" routerLink="/ouverture">Annuler</a>
+  </div>
+</form>

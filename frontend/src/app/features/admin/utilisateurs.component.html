@@ -1,0 +1,81 @@
+<h1>Gestion des utilisateurs</h1>
+<p class="muted">Creation de comptes et activation / desactivation (reserve au role Administrateur).</p>
+
+<div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+<div class="alert alert-success" *ngIf="successMessage()">{{ successMessage() }}</div>
+
+<div class="card">
+  <div class="actions-row" *ngIf="!formulaireOuvert">
+    <button class="btn-primary" (click)="ouvrirFormulaire()">Nouveau compte utilisateur</button>
+  </div>
+
+  <form *ngIf="formulaireOuvert" (ngSubmit)="creer()" class="form-grid">
+    <div class="field">
+      <label for="username">Nom d'utilisateur</label>
+      <input id="username" type="text" [(ngModel)]="nouvelUtilisateur.username" name="username" required />
+    </div>
+    <div class="field">
+      <label for="password">Mot de passe</label>
+      <input id="password" type="password" [(ngModel)]="nouvelUtilisateur.password" name="password" minlength="8" required />
+    </div>
+    <div class="field">
+      <label for="nom">Nom</label>
+      <input id="nom" type="text" [(ngModel)]="nouvelUtilisateur.nom" name="nom" required />
+    </div>
+    <div class="field">
+      <label for="prenom">Prenom</label>
+      <input id="prenom" type="text" [(ngModel)]="nouvelUtilisateur.prenom" name="prenom" required />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="nouvelUtilisateur.email" name="email" />
+    </div>
+    <div class="field">
+      <label for="role">Role</label>
+      <select id="role" [(ngModel)]="nouvelUtilisateur.role" name="role" required>
+        <option *ngFor="let r of roles" [value]="r">{{ roleLabels[r] }}</option>
+      </select>
+    </div>
+    <div class="actions-row">
+      <button type="submit" class="btn-primary" [disabled]="busy()">Creer</button>
+      <button type="button" class="btn-secondary" (click)="annuler()" [disabled]="busy()">Annuler</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">Comptes existants</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom d'utilisateur</th>
+          <th>Nom &amp; prenom</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Statut</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of utilisateurs()">
+          <td>{{ u.username }}</td>
+          <td>{{ u.prenom }} {{ u.nom }}</td>
+          <td>{{ u.email || '-' }}</td>
+          <td>{{ roleLabels[u.role] }}</td>
+          <td>{{ u.actif ? 'Actif' : 'Desactive' }}</td>
+          <td class="actions-row">
+            <button
+              [class]="u.actif ? 'btn-danger' : 'btn-secondary'"
+              (click)="changerStatut(u)"
+              [disabled]="busy()"
+            >{{ u.actif ? 'Desactiver' : 'Activer' }}</button>
+          </td>
+        </tr>
+        <tr *ngIf="!loading() && !utilisateurs().length">
+          <td colspan="6" class="empty-state">Aucun utilisateur.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Espace back-office</p>
+    <h1>Souscription et Rachat des Actions</h1>
+    <p class="hero-sub">Recherchez un client, instruisez un dossier ou consultez un portefeuille en quelques clics.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-tile">
+      <span class="stat-label">Souscriptions en cours</span>
+      <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('souscriptionsEnCours') ?? '—' }}</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-label">Rachats en cours</span>
+      <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('rachatsEnCours') ?? '—' }}</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-label">Ouvertures en cours</span>
+      <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('ouverturesEnCours') ?? '—' }}</span>
+    </div>
+    <ng-template #statErr><span class="stat-value stat-value-muted">—</span></ng-template>
+  </div>
+</section>
+
+<section class="module-section">
+  <a *ngFor="let m of modules" [routerLink]="m.path" class="module-card-dark">
+    <div class="module-card-top">
+      <h3>{{ m.title }}</h3>
+      <span class="module-badge" *ngIf="statFor(m.statKey) !== null">{{ statFor(m.statKey) }} en cours</span>
+    </div>
+    <p>{{ m.description }}</p>
+  </a>
+</section>

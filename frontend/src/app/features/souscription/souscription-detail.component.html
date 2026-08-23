@@ -1,0 +1,68 @@
+<ng-container *ngIf="!loading(); else chargement">
+  <ng-container *ngIf="souscription() as s">
+    <h1>Souscription {{ s.numeroSouscription }}</h1>
+    <p><app-statut-badge [statut]="s.statut"></app-statut-badge></p>
+
+    <div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+    <div class="alert alert-success" *ngIf="successMessage()">{{ successMessage() }}</div>
+
+    <div class="card">
+      <div class="card-title">Détail</div>
+      <div class="form-grid">
+        <div><span class="muted">Client (CIN/RNE)</span><br />{{ s.cinRneClient }}</div>
+        <div><span class="muted">N° compte titre</span><br />{{ s.numeroCompteTitre }}</div>
+        <div><span class="muted">Produit</span><br />{{ libelleProduit(s.produit) }}</div>
+        <div><span class="muted">Valeur liquidative</span><br />{{ s.valeurLiquidative | number: '1.3-3' }}</div>
+        <div><span class="muted">Nombre d'actions</span><br />{{ s.nombreActionsASouscrire }}</div>
+        <div><span class="muted">Montant souscription</span><br />{{ s.montantSouscription | number: '1.3-3' }}</div>
+        <div><span class="muted">Compte BNA débité</span><br />{{ s.numeroCompteBnaDebit }}</div>
+        <div><span class="muted">Actions en procession (avant)</span><br />{{ s.actionsEnProcessionAvant }}</div>
+        <div><span class="muted">Date souscription</span><br />{{ s.dateSouscription }}</div>
+        <div><span class="muted">Date valeur comptable</span><br />{{ s.dateValeurComptable }}</div>
+        <div *ngIf="s.referenceWs2"><span class="muted">Référence WS2</span><br />{{ s.referenceWs2 }}</div>
+        <div *ngIf="s.nouveauNombreActions !== null"><span class="muted">Nouveau nombre d'actions</span><br />{{ s.nouveauNombreActions }}</div>
+      </div>
+
+      <div class="actions-row">
+        <button class="btn-secondary" (click)="imprimerBulletin()">Imprimer le bulletin</button>
+        <button class="btn-secondary" *ngIf="s.statut === 'VALIDE'" (click)="imprimerAvisOperation()">Imprimer l'avis d'opération</button>
+      </div>
+
+      <div class="actions-row" *ngIf="s.statut === 'EN_COURS_ENREGISTREMENT' && authService.canSaisir()">
+        <a class="btn-secondary" [routerLink]="['/souscription', s.id, 'modifier']">Modifier</a>
+        <button class="btn-danger" (click)="supprimer()" [disabled]="busy()">Supprimer</button>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="s.statut === 'EN_COURS_ENREGISTREMENT'">
+      <div class="card-title">Importer une pièce jointe</div>
+      <div class="search-bar">
+        <div class="field">
+          <label for="typeDoc">Type de document</label>
+          <select id="typeDoc" [(ngModel)]="typeDocumentChoisi">
+            <option *ngFor="let t of typesDocument" [value]="t.value">{{ t.label }}</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fichier">Fichier</label>
+          <input id="fichier" type="file" (change)="onFichierChange($event)" />
+        </div>
+        <button class="btn-secondary" (click)="importer()" [disabled]="!fichierChoisi || busy()">Importer</button>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="s.statut === 'EN_COURS_ENREGISTREMENT' && authService.canValider()">
+      <div class="card-title">Etape 4 - Validation (appel WS2)</div>
+      <div class="actions-row">
+        <button class="btn-success" (click)="valider()" [disabled]="busy()">Valider</button>
+        <button class="btn-danger" (click)="rejeter()" [disabled]="busy()">Rejeter</button>
+      </div>
+    </div>
+
+    <app-audit-historique typeOperation="SOUSCRIPTION" [operationId]="s.id"></app-audit-historique>
+  </ng-container>
+</ng-container>
+
+<ng-template #chargement>
+  <p class="muted">Chargement...</p>
+</ng-template>

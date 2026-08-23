@@ -1,0 +1,95 @@
+<h1>Ouverture de compte titre</h1>
+<p class="muted">Etape 1 - Recherche et vérification du client (CIN, RNE, N° compte ou N° titre).</p>
+
+<div class="card">
+  <div class="search-bar">
+    <div class="field">
+      <label for="critere">Critère de recherche</label>
+      <input
+        id="critere"
+        type="text"
+        [(ngModel)]="critere"
+        (keyup.enter)="rechercher()"
+        placeholder="CIN, RNE, n° compte ou n° titre"
+      />
+    </div>
+    <button class="btn-primary" (click)="rechercher()" [disabled]="loading()">
+      {{ loading() ? 'Recherche...' : 'Rechercher' }}
+    </button>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+</div>
+
+<ng-container *ngIf="resultat() as res">
+  <div class="card">
+    <div class="card-title">Fiche signalétique BNA</div>
+    <div class="form-grid">
+      <div><span class="muted">Nom &amp; prénom</span><br />{{ res.ficheBna.nomPrenom }}</div>
+      <div><span class="muted">CIN/RNE</span><br />{{ res.ficheBna.cinRne }}</div>
+      <div><span class="muted">Activité</span><br />{{ res.ficheBna.activite }}</div>
+      <div><span class="muted">Adresse</span><br />{{ res.ficheBna.adresse }}</div>
+    </div>
+    <p class="muted" style="margin-top: 0.75rem;">
+      {{ res.possedeCompteTitre ? 'Ce client possède déjà un compte titre BNAC.' : "Ce client ne possède pas encore de compte titre BNAC." }}
+      Une demande d'ouverture peut être enregistrée dans les deux cas.
+    </p>
+    <div class="actions-row" *ngIf="authService.canSaisir()">
+      <button class="btn-primary" (click)="nouvelleDemande()">Nouvelle demande d'ouverture</button>
+    </div>
+  </div>
+
+  <div class="card" *ngIf="res.possedeCompteTitre && res.produitsExistants.length">
+    <div class="card-title">Produits déjà détenus</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>N° compte titre</th>
+            <th>Produit</th>
+            <th>Actions en procession</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of res.produitsExistants">
+            <td>{{ p.numeroCompteTitre }}</td>
+            <td>{{ libelleProduit(p.produit) }}</td>
+            <td>{{ p.nombreActionsEnProcession }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>
+
+<div class="card" *ngIf="enCours().length">
+  <div class="card-title">Demandes d'ouverture en cours d'enregistrement</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Type de compte souhaité</th>
+          <th>Date</th>
+          <th>Statut</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of enCours()">
+          <td>{{ d.numeroDemande }}</td>
+          <td>{{ libelleProduit(d.typeCompteSouhaite) }}</td>
+          <td>{{ d.dateDemande }}</td>
+          <td><app-statut-badge [statut]="d.statut"></app-statut-badge></td>
+          <td class="actions-row">
+            <a class="btn-secondary" [routerLink]="['/ouverture', d.id]">Voir</a>
+            <ng-container *ngIf="d.statut === 'EN_COURS_ENREGISTREMENT' && authService.canSaisir()">
+              <a class="btn-secondary" [routerLink]="['/ouverture', d.id, 'modifier']">Modifier</a>
+              <button class="btn-danger" (click)="supprimer(d)">Supprimer</button>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

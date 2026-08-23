@@ -1,0 +1,56 @@
+<h1>{{ editId ? 'Modifier la souscription' : 'Nouvelle souscription' }}</h1>
+<p class="muted">Etape 2 - Saisie du chargé de dossier.</p>
+
+<div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+
+<form class="card" [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loading()">
+  <div class="form-grid">
+    <div class="field">
+      <label for="cinRneClient">CIN / RNE client</label>
+      <input id="cinRneClient" type="text" formControlName="cinRneClient" />
+      <span class="error-text" *ngIf="form.get('cinRneClient')?.touched && form.get('cinRneClient')?.invalid">Champ obligatoire</span>
+    </div>
+
+    <div class="field">
+      <label for="numeroCompteTitre">N° compte titre</label>
+      <input id="numeroCompteTitre" type="text" formControlName="numeroCompteTitre" />
+      <span class="error-text" *ngIf="form.get('numeroCompteTitre')?.touched && form.get('numeroCompteTitre')?.invalid">Champ obligatoire</span>
+    </div>
+
+    <div class="field">
+      <label for="produit">Produit</label>
+      <select id="produit" formControlName="produit">
+        <option value="" disabled>Sélectionner...</option>
+        <option *ngFor="let p of produits" [value]="p.value">{{ p.label }}</option>
+      </select>
+      <span class="error-text" *ngIf="form.get('produit')?.touched && form.get('produit')?.invalid">Champ obligatoire</span>
+    </div>
+
+    <div class="field">
+      <label for="nombreActionsASouscrire">Nombre d'actions à souscrire</label>
+      <input id="nombreActionsASouscrire" type="number" min="1" formControlName="nombreActionsASouscrire" />
+      <span class="error-text" *ngIf="form.get('nombreActionsASouscrire')?.touched && form.get('nombreActionsASouscrire')?.invalid">Valeur invalide</span>
+    </div>
+
+    <div class="field">
+      <label for="numeroCompteBnaDebit">Compte BNA à débiter</label>
+      <select id="numeroCompteBnaDebit" formControlName="numeroCompteBnaDebit" *ngIf="comptesEligibles().length; else compteLibre">
+        <option value="" disabled>Sélectionner...</option>
+        <option *ngFor="let c of comptesEligibles()" [value]="c.numeroCompte">
+          {{ c.numeroCompte }} ({{ c.typeCompte }}) - provision {{ c.provisionDisponible | number: '1.3-3' }}
+        </option>
+      </select>
+      <ng-template #compteLibre>
+        <input type="text" formControlName="numeroCompteBnaDebit" placeholder="N° compte BNA" />
+      </ng-template>
+      <span class="error-text" *ngIf="form.get('numeroCompteBnaDebit')?.touched && form.get('numeroCompteBnaDebit')?.invalid">Champ obligatoire</span>
+    </div>
+  </div>
+
+  <div class="actions-row">
+    <button type="submit" class="btn-primary" [disabled]="saving()">
+      {{ saving() ? 'Enregistrement...' : 'Enregistrer' }}
+    </button>
+    <a class="btn-secondary" routerLink="/souscription">Annuler</a>
+  </div>
+</form>

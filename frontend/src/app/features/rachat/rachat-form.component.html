@@ -1,0 +1,56 @@
+<h1>{{ editId ? 'Modifier le rachat' : 'Nouveau rachat' }}</h1>
+<p class="muted">Etape 2 - Saisie du chargé de dossier.</p>
+
+<div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+
+<form class="card" [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loading()">
+  <div class="form-grid">
+    <div class="field">
+      <label for="cinRneClient">CIN / RNE client</label>
+      <input id="cinRneClient" type="text" formControlName="cinRneClient" />
+      <span class="error-text" *ngIf="form.get('cinRneClient')?.touched && form.get('cinRneClient')?.invalid">Champ obligatoire</span>
+    </div>
+
+    <div class="field">
+      <label for="numeroCompteTitre">N° compte titre</label>
+      <input id="numeroCompteTitre" type="text" formControlName="numeroCompteTitre" />
+      <span class="error-text" *ngIf="form.get('numeroCompteTitre')?.touched && form.get('numeroCompteTitre')?.invalid">Champ obligatoire</span>
+    </div>
+
+    <div class="field">
+      <label for="produit">Produit</label>
+      <select id="produit" formControlName="produit">
+        <option value="" disabled>Sélectionner...</option>
+        <option *ngFor="let p of produits" [value]="p.value">{{ p.label }}</option>
+      </select>
+      <span class="error-text" *ngIf="form.get('produit')?.touched && form.get('produit')?.invalid">Champ obligatoire</span>
+    </div>
+
+    <div class="field">
+      <label for="nombreActionsAVendre">Nombre d'actions à vendre</label>
+      <input id="nombreActionsAVendre" type="number" min="1" formControlName="nombreActionsAVendre" />
+      <span class="error-text" *ngIf="form.get('nombreActionsAVendre')?.touched && form.get('nombreActionsAVendre')?.invalid">Valeur invalide</span>
+    </div>
+
+    <div class="field">
+      <label for="numeroCompteBnaCredit">Compte BNA à créditer</label>
+      <select id="numeroCompteBnaCredit" formControlName="numeroCompteBnaCredit" *ngIf="comptesCredit().length; else compteLibre">
+        <option value="" disabled>Sélectionner...</option>
+        <option *ngFor="let c of comptesCredit()" [value]="c.numeroCompte">
+          {{ c.numeroCompte }} ({{ c.typeCompte }})
+        </option>
+      </select>
+      <ng-template #compteLibre>
+        <input type="text" formControlName="numeroCompteBnaCredit" placeholder="N° compte BNA" />
+      </ng-template>
+      <span class="error-text" *ngIf="form.get('numeroCompteBnaCredit')?.touched && form.get('numeroCompteBnaCredit')?.invalid">Champ obligatoire</span>
+    </div>
+  </div>
+
+  <div class="actions-row">
+    <button type="submit" class="btn-primary" [disabled]="saving()">
+      {{ saving() ? 'Enregistrement...' : 'Enregistrer' }}
+    </button>
+    <a class="btn-secondary" routerLink="/rachat">Annuler</a>
+  </div>
+</form>

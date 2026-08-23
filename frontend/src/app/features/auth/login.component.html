@@ -1,0 +1,58 @@
+<div class="login-screen">
+  <div class="login-panel-left">
+    <div class="deco-circle deco-circle-1"></div>
+    <div class="deco-circle deco-circle-2"></div>
+    <h1>Bienvenue sur votre espace bancaire sécurisé</h1>
+    <p class="login-intro">
+      Gérez les souscriptions, les demandes de rachat et les ouvertures de comptes titres,
+      avec une traçabilité complète de chaque opération.
+    </p>
+  </div>
+
+  <div class="login-panel-right">
+    <div class="login-form-wrap">
+      <img src="assets/bna-logo.png" alt="BNA Bank" class="login-logo" />
+
+      <h2>Connexion</h2>
+      <p class="login-sub">Saisissez vos identifiants pour continuer.</p>
+
+      <div class="alert alert-danger" *ngIf="errorMessage()">{{ errorMessage() }}</div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field-outline">
+          <label for="username" class="sr-only">Nom d'utilisateur</label>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            autocomplete="username"
+            placeholder="Nom d'utilisateur*"
+          />
+        </div>
+        <span class="error-text" *ngIf="form.get('username')?.touched && form.get('username')?.invalid">Champ obligatoire</span>
+
+        <div class="field-outline field-password">
+          <label for="password" class="sr-only">Mot de passe</label>
+          <input
+            id="password"
+            [type]="afficherMotDePasse() ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="Mot de passe*"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="afficherMotDePasse.set(!afficherMotDePasse())"
+            [attr.aria-label]="afficherMotDePasse() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+          >{{ afficherMotDePasse() ? '🙈' : '👁' }}</button>
+        </div>
+        <span class="error-text" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">Champ obligatoire</span>
+
+        <button type="submit" class="btn-login" [disabled]="loading()">
+          {{ loading() ? 'Connexion...' : 'Se connecter' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

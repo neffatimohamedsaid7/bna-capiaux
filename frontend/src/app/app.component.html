@@ -1,0 +1,31 @@
+<header class="app-header" *ngIf="!isLoginPage()">
+  <div class="app-header-inner">
+    <a routerLink="/" class="brand">
+      <span class="brand-mark">BNA</span>
+      <span class="brand-name">Capitaux</span>
+    </a>
+    <nav class="app-nav">
+      <a
+        *ngFor="let link of navLinks"
+        [routerLink]="link.path"
+        routerLinkActive="active"
+        class="app-nav-link"
+      >{{ link.label }}</a>
+      <a
+        *ngIf="authService.isAdmin()"
+        routerLink="/admin/utilisateurs"
+        routerLinkActive="active"
+        class="app-nav-link"
+      >Utilisateurs</a>
+    </nav>
+    <div class="app-user" *ngIf="authService.currentUser() as user">
+      <span class="app-user-name">{{ user.prenom }} {{ user.nom }}</span>
+      <span class="app-user-role">{{ roleLabels[user.role] }}</span>
+      <button type="button" class="app-logout-btn" (click)="logout()">Déconnexion</button>
+    </div>
+  </div>
+</header>
+
+<main [class.page]="!isLoginPage()">
+  <router-outlet></router-outlet>
+</main>
