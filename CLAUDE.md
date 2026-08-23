@@ -135,9 +135,10 @@ Reste a faire :
    `application.yml` une fois les vraies URLs/contrats WS1-WS4 fournis par BNA Capitaux. Seul
    point reellement bloquant, en attente d'une dependance externe.
 2. **CI/CD automatise** (section 6.3) - aucun pipeline pour l'instant (pas de `.github/workflows`).
-3. **Livrables documentaires** (section 9) - fait : [docs/ws-bnac.md](docs/ws-bnac.md) (contrat
-   WS1-WS4). Restent a ecrire : guide d'administration, manuel utilisateur (PEC + Validation) et
-   rapport de tests et recette.
+3. ~~**Livrables documentaires**~~ (section 9) - fait : [docs/ws-bnac.md](docs/ws-bnac.md) (contrat
+   WS1-WS4), [docs/guide-administration.md](docs/guide-administration.md),
+   [docs/manuel-utilisateur.md](docs/manuel-utilisateur.md),
+   [docs/rapport-tests-recette.md](docs/rapport-tests-recette.md).
 4. **TLS/HTTPS** (section 6.1) - tout tourne en HTTP en local ; a mettre en place au moment du
    deploiement, pas avant.
 
