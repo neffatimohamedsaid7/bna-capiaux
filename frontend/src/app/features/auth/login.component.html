@@ -1,7 +1,15 @@
-<div class="login-screen">
+<div class="login-screen" (mousemove)="onScreenMouseMove($event)">
   <div class="login-panel-left">
-    <div class="deco-circle deco-circle-1"></div>
-    <div class="deco-circle deco-circle-2"></div>
+    <div
+      class="deco-circle deco-circle-1"
+      [style.--px.px]="parallax().x * 16"
+      [style.--py.px]="parallax().y * 12"
+    ></div>
+    <div
+      class="deco-circle deco-circle-2"
+      [style.--px.px]="parallax().x * -11"
+      [style.--py.px]="parallax().y * -8"
+    ></div>
     <h1>Bienvenue sur votre espace bancaire sécurisé</h1>
     <p class="login-intro">
       Gérez les souscriptions, les demandes de rachat et les ouvertures de comptes titres,
@@ -10,9 +18,13 @@
   </div>
 
   <div class="login-panel-right">
-    <div class="login-form-wrap">
+    <div class="login-form-wrap" [class.shake]="shake()">
       <div class="login-logo-wrap">
-        <span class="login-logo-halo"></span>
+        <span
+          class="login-logo-halo"
+          [style.--px.px]="parallax().x * 7"
+          [style.--py.px]="parallax().y * 5"
+        ></span>
         <img src="assets/bna-logo.png" alt="BNA Bank" class="login-logo" />
       </div>
 
@@ -48,12 +60,32 @@
             class="toggle-password"
             (click)="afficherMotDePasse.set(!afficherMotDePasse())"
             [attr.aria-label]="afficherMotDePasse() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
-          >{{ afficherMotDePasse() ? '🙈' : '👁' }}</button>
+          >
+            <app-icon *ngIf="afficherMotDePasse()" name="eye-off" [size]="17" [strokeWidth]="1.8" class="icon-pop"></app-icon>
+            <app-icon *ngIf="!afficherMotDePasse()" name="eye" [size]="17" [strokeWidth]="1.8" class="icon-pop"></app-icon>
+          </button>
         </div>
         <span class="error-text" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">Champ obligatoire</span>
 
-        <button type="submit" class="btn-login" [disabled]="loading()">
-          {{ loading() ? 'Connexion...' : 'Se connecter' }}
+        <button
+          type="submit"
+          class="btn-login"
+          [disabled]="loading()"
+          (click)="addRipple($event)"
+          (mousemove)="onButtonMouseMove($event)"
+          (mouseleave)="onButtonMouseLeave()"
+          [style.--bx.px]="buttonMagnet().x"
+          [style.--by.px]="buttonMagnet().y"
+        >
+          <span class="btn-login-label">{{ loading() ? 'Connexion...' : 'Se connecter' }}</span>
+          <span
+            class="ripple"
+            *ngFor="let r of ripples()"
+            [style.width.px]="r.size"
+            [style.height.px]="r.size"
+            [style.left.px]="r.x"
+            [style.top.px]="r.y"
+          ></span>
         </button>
       </form>
     </div>

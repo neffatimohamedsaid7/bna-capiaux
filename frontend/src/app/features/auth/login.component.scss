@@ -33,11 +33,11 @@
 @keyframes halo-pulse {
   0%,
   100% {
-    transform: scale(0.92);
+    transform: translate(var(--px, 0px), var(--py, 0px)) scale(0.92);
     opacity: 0.55;
   }
   50% {
-    transform: scale(1.12);
+    transform: translate(var(--px, 0px), var(--py, 0px)) scale(1.12);
     opacity: 0.9;
   }
 }
@@ -45,10 +45,52 @@
 @keyframes drift {
   0%,
   100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate(var(--px, 0px), var(--py, 0px)) scale(1);
   }
   50% {
-    transform: translate(18px, -14px) scale(1.06);
+    transform: translate(calc(18px + var(--px, 0px)), calc(-14px + var(--py, 0px))) scale(1.06);
+  }
+}
+
+@keyframes shake-x {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-5px);
+  }
+  40%,
+  60% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes ripple-expand {
+  from {
+    transform: scale(0);
+    opacity: 0.45;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes icon-pop {
+  from {
+    transform: scale(0.5) rotate(-15deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
   }
 }
 
@@ -193,6 +235,10 @@
   animation: slide-fade-in 0.55s ease 0.18s both;
 }
 
+.login-form-wrap.shake {
+  animation: shake-x 0.5s ease;
+}
+
 .login-logo-wrap {
   position: relative;
   display: flex;
@@ -246,7 +292,17 @@
 
 .field-outline:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-soft);
+  animation: input-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes input-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--color-primary-soft), 0 0 14px rgba(15, 109, 85, 0.28);
+  }
 }
 
 .field-outline input {
@@ -269,17 +325,25 @@
 }
 
 .toggle-password {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: transparent;
   padding: 0.4rem;
-  font-size: 1rem;
   line-height: 1;
   color: var(--color-text-muted);
+  box-shadow: none;
 }
 
 .toggle-password:hover {
   filter: none;
   color: var(--color-text);
+  transform: none;
+}
+
+.icon-pop {
+  animation: icon-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .error-text {
@@ -290,6 +354,8 @@
 }
 
 .btn-login {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   margin-top: 0.5rem;
   padding: 0.9rem 1.1rem;
@@ -300,13 +366,40 @@
   font-weight: 700;
   border: none;
   box-shadow: 0 6px 16px rgba(15, 109, 85, 0.28);
-  transition: box-shadow 0.16s ease, transform 0.1s ease, filter 0.16s ease;
+  transition: box-shadow 0.16s ease, transform 0.12s ease-out, filter 0.16s ease;
+  transform: translate(var(--bx, 0px), var(--by, 0px));
+}
+
+.btn-login::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.32) 50%, transparent 60%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.btn-login:not(:disabled):hover::before {
+  transform: translateX(120%);
+  transition: transform 0.65s ease;
 }
 
 .btn-login:not(:disabled):hover {
   filter: brightness(1.06);
   box-shadow: 0 8px 20px rgba(15, 109, 85, 0.35);
-  transform: translateY(-1px);
+}
+
+.btn-login-label {
+  position: relative;
+  z-index: 1;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+  animation: ripple-expand 0.65s ease-out;
 }
 
 @media (max-width: 860px) {
@@ -333,10 +426,17 @@
   .login-panel-left h1,
   .login-intro,
   .login-form-wrap,
+  .login-form-wrap.shake,
   .login-logo-halo,
   .login-logo,
   .login-panel-left::before,
-  .login-panel-right::before {
+  .login-panel-right::before,
+  .field-outline:focus-within,
+  .icon-pop {
     animation: none;
+  }
+
+  .btn-login {
+    transform: none;
   }
 }
