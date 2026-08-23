@@ -135,9 +135,9 @@ Reste a faire :
    `application.yml` une fois les vraies URLs/contrats WS1-WS4 fournis par BNA Capitaux. Seul
    point reellement bloquant, en attente d'une dependance externe.
 2. **CI/CD automatise** (section 6.3) - aucun pipeline pour l'instant (pas de `.github/workflows`).
-3. **Livrables documentaires** (section 9) - Swagger couvre l'API REST, mais il manque la
-   documentation du contrat WS1-WS4 BNAC, le guide d'administration, le manuel utilisateur
-   (PEC + Validation) et le rapport de tests et recette.
+3. **Livrables documentaires** (section 9) - fait : [docs/ws-bnac.md](docs/ws-bnac.md) (contrat
+   WS1-WS4). Restent a ecrire : guide d'administration, manuel utilisateur (PEC + Validation) et
+   rapport de tests et recette.
 4. **TLS/HTTPS** (section 6.1) - tout tourne en HTTP en local ; a mettre en place au moment du
    deploiement, pas avant.
 
@@ -159,7 +159,9 @@ npm install
 npm start   # ng serve, proxy /api -> localhost:8081, ouvre sur http://localhost:4200
 ```
 
-Swagger UI : http://localhost:8081/swagger-ui.html
+Swagger UI : http://localhost:8081/swagger-ui.html (API REST entrante uniquement). Le contrat
+d'interfacage sortant WS1-WS4 vers BNAC est documente separement dans
+[docs/ws-bnac.md](docs/ws-bnac.md).
 
 ## Conventions de code
 
