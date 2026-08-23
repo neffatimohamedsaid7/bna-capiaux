@@ -7,27 +7,53 @@
 
   <div class="stats-row">
     <div class="stat-tile">
-      <span class="stat-label">Souscriptions en cours</span>
-      <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('souscriptionsEnCours') ?? '—' }}</span>
+      <span class="stat-icon"><app-icon name="souscription" [size]="18" [strokeWidth]="1.7"></app-icon></span>
+      <span class="stat-body">
+        <span class="stat-label">Souscriptions en cours</span>
+        <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('souscriptionsEnCours') ?? '—' }}</span>
+      </span>
     </div>
     <div class="stat-tile">
-      <span class="stat-label">Rachats en cours</span>
-      <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('rachatsEnCours') ?? '—' }}</span>
+      <span class="stat-icon"><app-icon name="rachat" [size]="18" [strokeWidth]="1.7"></app-icon></span>
+      <span class="stat-body">
+        <span class="stat-label">Rachats en cours</span>
+        <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('rachatsEnCours') ?? '—' }}</span>
+      </span>
     </div>
     <div class="stat-tile">
-      <span class="stat-label">Ouvertures en cours</span>
-      <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('ouverturesEnCours') ?? '—' }}</span>
+      <span class="stat-icon"><app-icon name="ouverture" [size]="18" [strokeWidth]="1.7"></app-icon></span>
+      <span class="stat-body">
+        <span class="stat-label">Ouvertures en cours</span>
+        <span class="stat-value" *ngIf="!statsError(); else statErr">{{ statFor('ouverturesEnCours') ?? '—' }}</span>
+      </span>
     </div>
     <ng-template #statErr><span class="stat-value stat-value-muted">—</span></ng-template>
   </div>
+
+  <ul class="mini-chart" *ngIf="chartRows().length" aria-label="Repartition des operations en cours par module">
+    <li
+      class="mini-chart-row"
+      *ngFor="let row of chartRows()"
+      tabindex="0"
+      [attr.aria-label]="row.label + ' : ' + row.value + ' en cours'"
+    >
+      <span class="mini-chart-label"><app-icon [name]="row.icon" [size]="14" [strokeWidth]="1.8"></app-icon>{{ row.label }}</span>
+      <span class="mini-chart-track">
+        <span class="mini-chart-fill" [style.width.%]="row.widthPct" [style.background]="row.color"></span>
+      </span>
+      <span class="mini-chart-value">{{ row.value }}</span>
+    </li>
+  </ul>
 </section>
 
 <section class="module-section">
   <a *ngFor="let m of modules" [routerLink]="m.path" class="module-card-dark">
     <div class="module-card-top">
-      <h3>{{ m.title }}</h3>
+      <span class="module-icon"><app-icon [name]="m.icon" [size]="20" [strokeWidth]="1.7"></app-icon></span>
       <span class="module-badge" *ngIf="statFor(m.statKey) !== null">{{ statFor(m.statKey) }} en cours</span>
     </div>
+    <h3>{{ m.title }}</h3>
     <p>{{ m.description }}</p>
+    <span class="module-card-link">Ouvrir <app-icon name="chevron-right" [size]="14" [strokeWidth]="2.2"></app-icon></span>
   </a>
 </section>

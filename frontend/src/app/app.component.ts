@@ -5,20 +5,21 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { filter, map } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 import { ROLE_LABELS } from './core/models/auth.model';
+import { IconComponent } from './shared/icon/icon.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, IconComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   readonly navLinks = [
-    { path: '/souscription', label: 'Souscription' },
-    { path: '/rachat', label: 'Rachat' },
-    { path: '/ouverture', label: 'Ouverture de compte' },
-    { path: '/consultation', label: 'Consultation' },
+    { path: '/souscription', label: 'Souscription', icon: 'souscription' },
+    { path: '/rachat', label: 'Rachat', icon: 'rachat' },
+    { path: '/ouverture', label: 'Ouverture de compte', icon: 'ouverture' },
+    { path: '/consultation', label: 'Consultation', icon: 'consultation' },
   ];
 
   readonly roleLabels = ROLE_LABELS;
@@ -41,5 +42,9 @@ export class AppComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  initials(prenom: string, nom: string): string {
+    return `${prenom.charAt(0)}${nom.charAt(0)}`.toUpperCase();
   }
 }

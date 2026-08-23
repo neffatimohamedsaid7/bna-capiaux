@@ -7,6 +7,7 @@
   --color-primary-dark: #0a4c3b;
   --color-primary-soft: #e4f2ec;
   --color-accent: #cfa04a;
+  --color-accent-soft: #f7ecd6;
   --color-bg: #f5f8f6;
   --color-surface: #ffffff;
   --color-border: #dde7e1;
@@ -20,6 +21,31 @@
   --color-warning-bg: #fdf3dc;
   --radius: 12px;
   --shadow: 0 1px 2px rgba(10, 40, 30, 0.06), 0 4px 14px rgba(10, 40, 30, 0.07);
+  --shadow-lift: 0 8px 24px rgba(10, 40, 30, 0.14), 0 2px 6px rgba(10, 40, 30, 0.08);
+  --gradient-primary: linear-gradient(135deg, #0f6d55 0%, #0a4c3b 100%);
+  --gradient-accent: linear-gradient(135deg, #e0b768 0%, #cfa04a 100%);
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0.55;
+  }
+  100% {
+    box-shadow: 0 0 0 6px currentColor;
+    opacity: 0;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 html, body {
@@ -56,6 +82,13 @@ a {
   box-shadow: var(--shadow);
   padding: 1.35rem 1.6rem;
   margin-bottom: 1.25rem;
+  animation: fade-up 0.25s ease both;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lift);
+  border-color: #cbdcd3;
 }
 
 .card-title {
@@ -75,7 +108,7 @@ a {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: var(--gradient-accent);
   flex-shrink: 0;
 }
 
@@ -303,7 +336,7 @@ th {
   font-size: 0.74rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  background: var(--color-bg);
+  background: linear-gradient(180deg, #eef4f0 0%, var(--color-bg) 100%);
 }
 
 th:first-child {
@@ -339,26 +372,23 @@ tbody tr:last-child td {
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   padding: 0.28rem 0.65rem 0.28rem 0.55rem;
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.01em;
-}
-
-.badge::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  flex-shrink: 0;
+  position: relative;
 }
 
 .badge-en-cours {
   background: var(--color-warning-bg);
   color: var(--color-warning);
+}
+
+.badge-en-cours app-icon {
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: 50%;
 }
 
 .badge-valide {
