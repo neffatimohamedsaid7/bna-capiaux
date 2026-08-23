@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import tn.bna.bnac.audit.AuditService;
+import tn.bna.bnac.comptabilite.EcritureComptableService;
 import tn.bna.bnac.common.exception.ClientNonBnaException;
 import tn.bna.bnac.common.exception.CompteBnaIntrouvableException;
 import tn.bna.bnac.common.exception.DocumentsManquantsException;
@@ -53,6 +54,7 @@ public class RachatService {
     private final DocumentStorageService documentStorageService;
     private final RachatMapper mapper;
     private final AuditService auditService;
+    private final EcritureComptableService ecritureComptableService;
 
     // ---- Etape 1 : recherche et verification client ----------------------------------------
 
@@ -260,6 +262,10 @@ public class RachatService {
         rachatRepository.save(rachat);
         auditService.enregistrer(TypeOperation.RACHAT, id, TypeAction.VALIDATION,
                 "Rachat " + rachat.getNumeroRachat() + " valide");
+        // Symetrique de la souscription (section 2.3) : ecriture comptable debit compte produit / credit compte client.
+        ecritureComptableService.enregistrer(TypeOperation.RACHAT, id,
+                rachat.getProduit().name(), rachat.getNumeroCompteBnaCredit(),
+                rachat.getMontantRachat());
         return mapper.toResponse(rachat);
     }
 

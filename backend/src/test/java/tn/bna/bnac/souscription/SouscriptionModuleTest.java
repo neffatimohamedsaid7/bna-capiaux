@@ -164,6 +164,21 @@ class SouscriptionModuleTest extends IntegrationTestBase {
     }
 
     @Test
+    void valider_genereUneEcritureComptableDebitClientCreditProduit() throws Exception {
+        long id = idDe(creerSouscriptionValide());
+        importerDocuments(id);
+
+        mockMvc.perform(post("/api/souscriptions/" + id + "/valider").header("Authorization", bearer(tokenValidateur)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/ecritures-comptables/SOUSCRIPTION/" + id).header("Authorization", bearer(tokenValidateur)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].compteDebit").value("01100012345"))
+                .andExpect(jsonPath("$[0].compteCredit").value("FCP_PROGRES"))
+                .andExpect(jsonPath("$[0].montant").isNumber());
+    }
+
+    @Test
     void role_chargeDeDossierNePeutPasValider() throws Exception {
         long id = idDe(creerSouscriptionValide());
         importerDocuments(id);

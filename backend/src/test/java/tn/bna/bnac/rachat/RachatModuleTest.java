@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -110,6 +111,21 @@ class RachatModuleTest extends IntegrationTestBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statut").value("VALIDE"))
                 .andExpect(jsonPath("$.referenceWs3").isNotEmpty());
+    }
+
+    @Test
+    void valider_genereUneEcritureComptableDebitProduitCreditClient() throws Exception {
+        long id = idDe(creerRachatValide(1));
+        importerBulletinSigne(id);
+
+        mockMvc.perform(post("/api/rachats/" + id + "/valider").header("Authorization", bearer(tokenValidateur)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/ecritures-comptables/RACHAT/" + id).header("Authorization", bearer(tokenValidateur)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].compteDebit").value("FCP_PROGRES"))
+                .andExpect(jsonPath("$[0].compteCredit").value("01100012345"))
+                .andExpect(jsonPath("$[0].montant").isNumber());
     }
 
     @Test

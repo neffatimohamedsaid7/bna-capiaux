@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import tn.bna.bnac.audit.AuditService;
+import tn.bna.bnac.comptabilite.EcritureComptableService;
 import tn.bna.bnac.common.exception.ClientNonBnaException;
 import tn.bna.bnac.common.exception.DocumentsManquantsException;
 import tn.bna.bnac.common.exception.MontantSuperieurProvisionException;
@@ -60,6 +61,7 @@ public class SouscriptionService {
     private final DocumentStorageService documentStorageService;
     private final SouscriptionMapper mapper;
     private final AuditService auditService;
+    private final EcritureComptableService ecritureComptableService;
 
     // ---- Etape 1 : recherche et verification client ----------------------------------------
 
@@ -270,6 +272,10 @@ public class SouscriptionService {
         souscriptionRepository.save(souscription);
         auditService.enregistrer(TypeOperation.SOUSCRIPTION, id, TypeAction.VALIDATION,
                 "Souscription " + souscription.getNumeroSouscription() + " validee");
+        // RG1.3 (section 1.3, resultat "Valider") : ecriture comptable debit compte client / credit compte produit.
+        ecritureComptableService.enregistrer(TypeOperation.SOUSCRIPTION, id,
+                souscription.getNumeroCompteBnaDebit(), souscription.getProduit().name(),
+                souscription.getMontantSouscription());
         return mapper.toResponse(souscription);
     }
 

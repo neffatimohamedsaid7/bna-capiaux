@@ -95,6 +95,13 @@ routes sauf `/login`).
 - **Audit** (`tn.bna.bnac.audit`, entite `JournalAudit`) : trace les actions (creation,
   modification, validation, rejet...) sur les operations. Consultable via
   `GET /api/audit/{typeOperation}/{operationId}`.
+- **Ecritures comptables** (`tn.bna.bnac.comptabilite`, entite `EcritureComptable`) : a la
+  validation d'une souscription ou d'un rachat, le cahier des charges (sections 1.3/2.3) demande
+  une "ecriture comptable : debit compte client / credit compte produit". Aucun WS n'etant defini
+  vers le core banking BNA pour un mouvement reel (seuls WS1-WS4 vers BNAC existent), cette entite
+  se contente d'enregistrer la trace (compte debite, compte/produit credite, montant) sans tenue
+  de solde ni grand livre - a l'image du journal d'audit. Consultable via
+  `GET /api/ecritures-comptables/{typeOperation}/{operationId}`.
 - **Dashboard** (`tn.bna.bnac.dashboard`) : statistiques agregees via `GET /api/dashboard/stats`.
 - **Generation PDF** (`tn.bna.bnac.common.pdf.PdfBulletinBuilder`, + `SouscriptionPdfService`,
   `RachatPdfService`, `OuverturePdfService`) : bulletins/ordres PDF generes et stockes via
