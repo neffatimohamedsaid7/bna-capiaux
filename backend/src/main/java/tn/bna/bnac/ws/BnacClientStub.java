@@ -2,6 +2,7 @@ package tn.bna.bnac.ws;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import tn.bna.bnac.domain.ProduitFinancier;
 import tn.bna.bnac.dto.ClientBnacDetailResponse;
@@ -31,6 +32,7 @@ public class BnacClientStub implements BnacClient {
     private static final String CIN_SANS_COMPTE_TITRE = "11112222";
 
     @Override
+    @Cacheable(cacheNames = "detailClientBnac", key = "#critereRecherche")
     public ClientBnacDetailResponse detailClient(String critereRecherche) {
         log.warn("[BNAC STUB] detailClient('{}') - reponse simulee, aucun appel reseau reel", critereRecherche);
 

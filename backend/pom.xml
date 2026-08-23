@@ -90,6 +90,16 @@
             <version>1.3.30</version>
         </dependency>
 
+        <!-- Mise en cache des donnees de reference WS1 (produits, valeurs liquidatives - section 6.2) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+
         <!-- Reduction du boilerplate (getters/setters/constructeurs) -->
         <dependency>
             <groupId>org.projectlombok</groupId>

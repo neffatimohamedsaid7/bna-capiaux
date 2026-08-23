@@ -19,4 +19,7 @@ public class BnacWsProperties {
     private String ws2Souscription;
     private String ws3DemandeRachat;
     private String ws4OuvertureCompte;
+
+    /** TTL du cache des donnees de reference WS1 (section 6.2 du cahier des charges). */
+    private int cacheTtlSeconds = 60;
 }

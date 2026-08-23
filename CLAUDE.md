@@ -106,6 +106,10 @@ routes sauf `/login`).
 - **Generation PDF** (`tn.bna.bnac.common.pdf.PdfBulletinBuilder`, + `SouscriptionPdfService`,
   `RachatPdfService`, `OuverturePdfService`) : bulletins/ordres PDF generes et stockes via
   `DocumentStorageService` pour les 3 modules a workflow.
+- **Cache WS1** (`tn.bna.bnac.config.CacheConfig`, section 6.2 du cahier des charges "Mise en
+  cache des donnees de reference") : la reponse de `BnacClient.detailClient()` (produits, valeurs
+  liquidatives) est mise en cache (Caffeine) par critere de recherche, TTL court et configurable
+  (`bnac.ws.cache-ttl-seconds`, defaut 60s) car ces donnees evoluent au jour le jour cote BNAC.
 
 ## Donnees de test simulees (stubs)
 
@@ -120,19 +124,22 @@ Le CIN `11112222` renvoie `possedeCompteTitre=false` cote WS1.
 ## A faire (TODO)
 
 Fait : securite JWT + restriction par role, gestion des comptes utilisateurs, frontend Angular
-(4 modules + admin), tests automatises (49 tests JUnit/integration, `mvn test`), PostgreSQL via
-Docker Compose, audit trail, dashboard, generation PDF. Voir sections ci-dessus pour le detail
-de chacun.
+(4 modules + admin), tests automatises (52 tests JUnit/integration, `mvn test`), PostgreSQL via
+Docker Compose, audit trail, ecritures comptables, dashboard, generation PDF, cache WS1. Voir
+sections ci-dessus pour le detail de chacun. Depot pousse sur
+[github.com/neffatimohamedsaid7/bna-capiaux](https://github.com/neffatimohamedsaid7/bna-capiaux).
 
 Reste a faire :
 
 1. **Integration reelle BNAC** - passer `bnac.ws.stub-mode` de `true` a `false` dans
    `application.yml` une fois les vraies URLs/contrats WS1-WS4 fournis par BNA Capitaux. Seul
    point reellement bloquant, en attente d'une dependance externe.
-2. **Commit du travail en cours** - une grande partie du code ci-dessus (securite par role,
-   audit, dashboard, PDF, gestion utilisateurs, tests, frontend, restructuration
-   backend/frontend, docker-compose.yml) est presente sur disque mais pas encore commitee
-   (dernier commit : module 4 consultation). A commiter en chunks logiques.
+2. **CI/CD automatise** (section 6.3) - aucun pipeline pour l'instant (pas de `.github/workflows`).
+3. **Livrables documentaires** (section 9) - Swagger couvre l'API REST, mais il manque la
+   documentation du contrat WS1-WS4 BNAC, le guide d'administration, le manuel utilisateur
+   (PEC + Validation) et le rapport de tests et recette.
+4. **TLS/HTTPS** (section 6.1) - tout tourne en HTTP en local ; a mettre en place au moment du
+   deploiement, pas avant.
 
 ## Lancer le projet
 

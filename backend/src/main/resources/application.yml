@@ -44,6 +44,9 @@ bnac:
     ws2-souscription: /souscriptions
     ws3-demande-rachat: /rachats
     ws4-ouverture-compte: /comptes
+    # Mise en cache de la reponse WS1 (produits, valeurs liquidatives - section 6.2 du cahier
+    # des charges) par critere de recherche, pour eviter les appels repetes en rafale.
+    cache-ttl-seconds: 60
 
   # Dossier local de stockage des pieces jointes (ordre de virement, bulletins signes, ...).
   documents:

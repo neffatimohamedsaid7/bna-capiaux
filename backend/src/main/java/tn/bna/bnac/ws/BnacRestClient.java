@@ -3,6 +3,7 @@ package tn.bna.bnac.ws;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -30,6 +31,7 @@ public class BnacRestClient implements BnacClient {
     private final BnacWsProperties properties;
 
     @Override
+    @Cacheable(cacheNames = "detailClientBnac", key = "#critereRecherche")
     public ClientBnacDetailResponse detailClient(String critereRecherche) {
         String url = properties.getBaseUrl() + properties.getWs1DetailClient() + "?critere=" + critereRecherche;
         try {
