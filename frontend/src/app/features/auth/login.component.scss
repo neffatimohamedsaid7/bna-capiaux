@@ -63,6 +63,33 @@
   }
 }
 
+@keyframes glow-drift-left {
+  0% {
+    transform: translate(-6%, -4%) scale(1);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: translate(6%, 5%) scale(1.18);
+    filter: hue-rotate(14deg);
+  }
+  100% {
+    transform: translate(-6%, -4%) scale(1);
+    filter: hue-rotate(0deg);
+  }
+}
+
+@keyframes blob-drift-right {
+  0% {
+    transform: translate(-8%, -6%) scale(1);
+  }
+  50% {
+    transform: translate(10%, 8%) scale(1.15);
+  }
+  100% {
+    transform: translate(-8%, -6%) scale(1);
+  }
+}
+
 // ---- Panneau gauche : presentation, degrade vert -------------------------------------------
 
 .login-panel-left {
@@ -76,6 +103,17 @@
   background: linear-gradient(160deg, #0a1f1a 0%, #0d3329 45%, #12a28c 130%);
   color: #fff;
   overflow: hidden;
+}
+
+.login-panel-left::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(207, 160, 74, 0.28) 0%, transparent 45%),
+    radial-gradient(circle at 75% 70%, rgba(18, 162, 140, 0.35) 0%, transparent 50%);
+  animation: glow-drift-left 16s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .deco-circle {
@@ -126,14 +164,30 @@
 // ---- Panneau droit : formulaire -------------------------------------------------------------
 
 .login-panel-right {
+  position: relative;
   flex: 1 1 55%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2.5rem;
+  overflow: hidden;
+}
+
+.login-panel-right::before {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(circle at 25% 30%, rgba(15, 109, 85, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 78% 68%, rgba(207, 160, 74, 0.1) 0%, transparent 50%);
+  filter: blur(30px);
+  animation: blob-drift-right 20s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .login-form-wrap {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 400px;
   animation: slide-fade-in 0.55s ease 0.18s both;
@@ -280,7 +334,9 @@
   .login-intro,
   .login-form-wrap,
   .login-logo-halo,
-  .login-logo {
+  .login-logo,
+  .login-panel-left::before,
+  .login-panel-right::before {
     animation: none;
   }
 }
