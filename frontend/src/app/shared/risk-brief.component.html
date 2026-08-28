@@ -1,0 +1,16 @@
+<div class="risk-brief">
+  <div class="risk-brief-header">
+    <span class="risk-brief-title"><app-icon name="sparkles" [size]="15" [strokeWidth]="1.8"></app-icon>Résumé IA</span>
+    <button type="button" class="risk-brief-refresh" (click)="generer()" [disabled]="chargement" title="Régénérer">
+      Régénérer
+    </button>
+  </div>
+
+  <p class="muted" *ngIf="chargement">Analyse en cours...</p>
+
+  <p class="risk-brief-text" *ngIf="!chargement && brief">{{ brief }}</p>
+
+  <p class="risk-brief-error" *ngIf="!chargement && erreur">
+    Résumé indisponible : {{ erreur }}
+  </p>
+</div>

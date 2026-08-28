@@ -110,6 +110,17 @@ routes sauf `/login`).
   cache des donnees de reference") : la reponse de `BnacClient.detailClient()` (produits, valeurs
   liquidatives) est mise en cache (Caffeine) par critere de recherche, TTL court et configurable
   (`bnac.ws.cache-ttl-seconds`, defaut 60s) car ces donnees evoluent au jour le jour cote BNAC.
+- **Fonctionnalites IA** (`tn.bna.bnac.ai`, `tn.bna.bnac.riskbrief`, `tn.bna.bnac.assistant`) -
+  optionnelles, hors perimetre du cahier des charges, appellent Claude (SDK `anthropic-java`) :
+  - Resume de risque : `GET /api/risk-brief/{typeOperation}/{operationId}` (reserve
+    VALIDATEUR/ADMIN), resume factuel de 1-3 phrases (historique du client, montant/provision,
+    rejets anterieurs) affiche dans le frontend juste avant les boutons Valider/Rejeter.
+  - Assistant d'aide en ligne : `POST /api/assistant/chat`, repond aux questions sur les regles
+    de gestion a partir d'une base de connaissance fixe (`assistant/knowledge-base.md`, condensee
+    du cahier des charges), widget de chat flottant sur toutes les pages authentifiees.
+  - Necessite la variable d'environnement `ANTHROPIC_API_KEY` (`claude.api-key` dans
+    `application.yml`, modele configure via `claude.model`, defaut `claude-opus-5`) ; sans elle
+    les deux endpoints repondent explicitement `503` plutot que de degrader silencieusement.
 
 ## Donnees de test simulees (stubs)
 
@@ -124,9 +135,10 @@ Le CIN `11112222` renvoie `possedeCompteTitre=false` cote WS1.
 ## A faire (TODO)
 
 Fait : securite JWT + restriction par role, gestion des comptes utilisateurs, frontend Angular
-(4 modules + admin), tests automatises (52 tests JUnit/integration, `mvn test`), PostgreSQL via
-Docker Compose, audit trail, ecritures comptables, dashboard, generation PDF, cache WS1. Voir
-sections ci-dessus pour le detail de chacun. Depot pousse sur
+(4 modules + admin), tests automatises (58 tests JUnit/integration, `mvn test`), PostgreSQL via
+Docker Compose, audit trail, ecritures comptables, dashboard, generation PDF, cache WS1,
+fonctionnalites IA optionnelles (resume de risque, assistant). Voir sections ci-dessus pour le
+detail de chacun. Depot pousse sur
 [github.com/neffatimohamedsaid7/bna-capiaux](https://github.com/neffatimohamedsaid7/bna-capiaux).
 
 Reste a faire :
@@ -147,6 +159,10 @@ Reste a faire :
 ```powershell
 # Base de donnees (PostgreSQL via Docker) - depuis la racine du repo
 docker compose up -d
+
+# Optionnel : active les fonctionnalites IA (resume de risque, assistant). Sans cette variable,
+# le reste de l'application fonctionne normalement, ces deux endpoints repondent juste 503.
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
 
 # Backend (profil par defaut = PostgreSQL ; profil dev = H2 en memoire)
 cd backend

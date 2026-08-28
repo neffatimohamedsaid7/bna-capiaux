@@ -10,11 +10,12 @@ import { StatutBadgeComponent } from '../../shared/statut-badge.component';
 import { AuthService } from '../../core/services/auth.service';
 import { ouvrirPdf } from '../../core/pdf-download.util';
 import { AuditHistoriqueComponent } from '../../shared/audit-historique.component';
+import { RiskBriefComponent } from '../../shared/risk-brief.component';
 
 @Component({
   selector: 'app-souscription-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, StatutBadgeComponent, AuditHistoriqueComponent],
+  imports: [CommonModule, FormsModule, RouterLink, StatutBadgeComponent, AuditHistoriqueComponent, RiskBriefComponent],
   templateUrl: './souscription-detail.component.html',
 })
 export class SouscriptionDetailComponent implements OnInit {

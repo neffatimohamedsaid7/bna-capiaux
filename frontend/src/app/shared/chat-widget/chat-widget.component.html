@@ -1,0 +1,49 @@
+<button
+  type="button"
+  class="chat-fab"
+  (click)="toggle()"
+  [attr.aria-label]="open() ? 'Fermer l\'assistant' : 'Ouvrir l\'assistant'"
+>
+  <app-icon [name]="open() ? 'x' : 'message-circle'" [size]="22" [strokeWidth]="1.8"></app-icon>
+</button>
+
+<div class="chat-panel" *ngIf="open()">
+  <div class="chat-panel-header">
+    <span class="chat-panel-title"><app-icon name="sparkles" [size]="16" [strokeWidth]="1.8"></app-icon>Assistant</span>
+    <button type="button" class="chat-panel-close" (click)="toggle()" aria-label="Fermer">
+      <app-icon name="x" [size]="16" [strokeWidth]="1.9"></app-icon>
+    </button>
+  </div>
+
+  <div class="chat-panel-body">
+    <p class="chat-empty" *ngIf="!messages().length">
+      Posez une question sur le fonctionnement de l'application (règles de gestion, documents
+      requis, statuts...).
+    </p>
+
+    <div class="chat-bubble" [class.chat-bubble-user]="m.role === 'user'" *ngFor="let m of messages()">
+      {{ m.content }}
+    </div>
+
+    <div class="chat-bubble chat-bubble-loading" *ngIf="sending()">
+      <span></span><span></span><span></span>
+    </div>
+
+    <p class="chat-error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+    <div #scrollAnchor></div>
+  </div>
+
+  <div class="chat-panel-input">
+    <textarea
+      rows="1"
+      placeholder="Votre question..."
+      [(ngModel)]="draft"
+      (keydown.enter)="$event.preventDefault(); envoyer()"
+      [disabled]="sending()"
+    ></textarea>
+    <button type="button" (click)="envoyer()" [disabled]="sending() || !draft.trim()" aria-label="Envoyer">
+      <app-icon name="send" [size]="16" [strokeWidth]="1.9"></app-icon>
+    </button>
+  </div>
+</div>

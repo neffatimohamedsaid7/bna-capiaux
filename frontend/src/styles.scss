@@ -469,3 +469,59 @@ tbody tr:last-child td {
   border-bottom-color: var(--color-primary);
   background: var(--color-primary-soft);
 }
+
+.risk-brief {
+  border-radius: 10px;
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.risk-brief-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.risk-brief-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #7a5a1e;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.risk-brief-refresh {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #7a5a1e;
+  text-decoration: underline;
+}
+
+.risk-brief-refresh:not(:disabled):hover {
+  color: var(--color-text);
+  transform: none;
+}
+
+.risk-brief-text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.risk-brief-error {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}

@@ -35,3 +35,5 @@
 <main [class.page]="!isLoginPage()">
   <router-outlet></router-outlet>
 </main>
+
+<app-chat-widget *ngIf="!isLoginPage()"></app-chat-widget>

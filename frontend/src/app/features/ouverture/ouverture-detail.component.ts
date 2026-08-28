@@ -10,11 +10,12 @@ import { StatutBadgeComponent } from '../../shared/statut-badge.component';
 import { AuthService } from '../../core/services/auth.service';
 import { ouvrirPdf } from '../../core/pdf-download.util';
 import { AuditHistoriqueComponent } from '../../shared/audit-historique.component';
+import { RiskBriefComponent } from '../../shared/risk-brief.component';
 
 @Component({
   selector: 'app-ouverture-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, StatutBadgeComponent, AuditHistoriqueComponent],
+  imports: [CommonModule, FormsModule, RouterLink, StatutBadgeComponent, AuditHistoriqueComponent, RiskBriefComponent],
   templateUrl: './ouverture-detail.component.html',
 })
 export class OuvertureDetailComponent implements OnInit {

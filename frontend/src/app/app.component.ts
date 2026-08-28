@@ -6,11 +6,12 @@ import { filter, map } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 import { ROLE_LABELS } from './core/models/auth.model';
 import { IconComponent } from './shared/icon/icon.component';
+import { ChatWidgetComponent } from './shared/chat-widget/chat-widget.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, IconComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, IconComponent, ChatWidgetComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

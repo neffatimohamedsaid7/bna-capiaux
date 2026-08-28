@@ -53,6 +53,7 @@
 
     <div class="card" *ngIf="s.statut === 'EN_COURS_ENREGISTREMENT' && authService.canValider()">
       <div class="card-title">Etape 4 - Validation (appel WS2)</div>
+      <app-risk-brief typeOperation="SOUSCRIPTION" [operationId]="s.id"></app-risk-brief>
       <div class="actions-row">
         <button class="btn-success" (click)="valider()" [disabled]="busy()">Valider</button>
         <button class="btn-danger" (click)="rejeter()" [disabled]="busy()">Rejeter</button>
