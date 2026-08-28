@@ -13,6 +13,9 @@ public interface OuvertureCompteRepository extends JpaRepository<OuvertureCompte
 
     List<OuvertureCompte> findByCinRneClientAndStatut(String cinRneClient, StatutOperation statut);
 
+    /** Resume de risque IA : historique complet (tous statuts) pour un client. */
+    List<OuvertureCompte> findByCinRneClient(String cinRneClient);
+
     /** Tableau de bord : nombre total de dossiers dans un statut donne, tous clients confondus. */
     long countByStatut(StatutOperation statut);
 }

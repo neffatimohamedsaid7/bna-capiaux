@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tn.bna.bnac.ai.ClaudeServiceException;
 import tn.bna.bnac.ws.BnacWebServiceException;
 
 import java.time.Instant;
@@ -32,6 +33,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBnacWs(BnacWebServiceException ex, HttpServletRequest request) {
         log.error("Erreur interfacage BNAC ({})", ex.getWebService(), ex);
         return build(HttpStatus.BAD_GATEWAY, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(ClaudeServiceException.class)
+    public ResponseEntity<ErrorResponse> handleClaude(ClaudeServiceException ex, HttpServletRequest request) {
+        log.error("Erreur fonctionnalite IA", ex);
+        return build(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage(), request);
     }
 
     @ExceptionHandler(AuthenticationException.class)

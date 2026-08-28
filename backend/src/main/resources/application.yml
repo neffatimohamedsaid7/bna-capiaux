@@ -57,3 +57,11 @@ security:
   jwt:
     secret: change_this_secret_in_production
     expiration-ms: 3600000
+
+# Fonctionnalites IA (resume de risque a la validation, assistant agent) - section optionnelle,
+# hors perimetre du cahier des charges. Cle lue depuis la variable d'environnement
+# ANTHROPIC_API_KEY ; les endpoints /api/risk-brief et /api/assistant echouent explicitement
+# (503) si elle n'est pas definie, plutot que de degrader silencieusement.
+claude:
+  api-key: ${ANTHROPIC_API_KEY:}
+  model: claude-opus-5
